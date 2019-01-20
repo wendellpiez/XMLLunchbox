@@ -1,3 +1,3 @@
 docker run -ti \
-    --link basexhttp:basexhttp \
-    basex/basexhttp:latest basexclient -nbasexhttp
+    --link boxer:boxer \
+    basex/basexhttp:latest basexclient -nboxer

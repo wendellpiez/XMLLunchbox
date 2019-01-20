@@ -9,23 +9,24 @@ This document describes how to run [BaseX](http://basex.org/) inside a [Docker](
 
 You only need to complete the steps in this section once.
 
-### Create a _Dockerfile_
+### Create a working directory
 
-Docker containers are built from configuration files with the conventional name of _Dockerfile_. Create a new directory (ours is called _docker-basex_), and create inside it a file called _Dockerfile_ with the following contents.
+Create a new directory. Ours is called _docker-basex_, we’ll refer to it that way below, and all instructions below should be performed from within this directory.
+
+### Make Saxon available
+
+Download the latest version of Saxon HE from <https://sourceforge.net/projects/saxon/files/Saxon-HE/>, and unzip it. Inside your working directory, create a _lib_ subdirectory, and within that create a _custom_ subdirectory. Copy the _saxon9he.jar_ file into that _custom_ subdirectory.
+
+### Create a Dockerfile
+
+Copy the following text to a file called _Dockerfile_ inside your _docker-basex_ directory:
 
 ```bash
 FROM basex/basexhttp:latest
 USER root
 RUN apk update
 USER basex
-```
-
-### Create a Docker container
-
-Create a Docker container on your system, to be called _boxer_, by running the following at the command line inside your _docker-basex_ directory:
-
-```bash
-docker build -t boxer .
+ENV CLASSPATH '/srv/basex/lib/custom/saxon9he.jar'
 ```
 
 ### Create a script to launch Boxer
@@ -35,10 +36,11 @@ Copy the following text to a file called _boxer.sh_ inside your _docker-basex_ d
 ```bash
 #!/bin/bash
 docker run -it \
-	--name basexhttp \
+	--name boxer \
 	--publish 1984:1984 \
 	--publish 8984:8984 \
 	--volume "$(pwd)/basex/data":/srv/basex/data \
+	--volume "$(pwd)/basex/lib/custom":/srv/basex/lib/custom \
 	--rm \
 	boxer
 ```
@@ -51,17 +53,15 @@ Copy the following text to a file called _boxer-cl.sh_ inside your _docker-basex
 
 ```bash
 docker run -ti \
-    --link basexhttp:basexhttp \
-    basex/basexhttp:latest basexclient -nbasexhttp
+    --link boxer:boxer \
+    basex/basexhttp:latest basexclient -nboxer
 ```
 
 Change the permissions to make the file executable.
 
 ## Run Boxer
 
-Open a terminal, navigate to your _docker_basex_ directory, and run `./boxer.sh`.
-
-This launches BaseX inside the container.
+Open a terminal, navigate to your _docker_basex_ directory, and run `./boxer.sh`. This launches BaseX inside the container. The steps below all depend on your already having launched the Boxer server in this way.
 
 ### Test your running instance
 
@@ -69,20 +69,25 @@ This launches BaseX inside the container.
 from your browser address bar. If you are asked for credentials, authenticate with userid “admin” and password “admin”. It should return the current date.
 1. Run `curl -u admin:admin -i "http://localhost:8984/rest?query=current-date()"` from the command line. It should also return the current date.
 
-### Text your command-line access
+### Test your access to the BaseX command line
 
-In a different terminal window, also inside your _docker-basex_ directory, run `./boxer-cl.sh`. Authenticate with userid “admin” and password “admin”. You should be deposited at the BaseX command line. Type `XQUERY current-date()` and hit the Enter key. It should return the current date.
+In a different terminal window, also inside your _docker-basex_ directory, run `./boxer-cl.sh`. Authenticate with userid “admin” and password “admin”. You should be deposited at the BaseX command line. Type `xquery current-date()` and hit the Enter key. It should return the current date.
 
-### Add
+### Verify your XSLT processor
 
-We downloaded the latest version of SaxonHE from <https://sourceforge.net/projects/saxon/files/Saxon-HE/9.9/> and unzipped it into a subdirectory inside our _docker-basex_ directory. You’ll probably want to update this when new versions of SaxonHE are released.
+At the BaseX command line that you opened above, run `xquery xslt:processor()`. It should return “Saxon HE”.
+
+### Access the unix command line
+
+In a differet terminal window, also inside your _docker-basex_ directory, run `docker exec -it boxer bash`. You will be deposited at a regular unix command prompt inside your _boxer_ container. Your userid is “basex”, you are located at _/srv_, and your BaseX resouces are at _/srv/basex_. From the BaseX resources listed in the [full distribution](http://docs.basex.org/wiki/Startup#Full_Distributions), you have the _data_, _lib_, _repo_, and _webapp_ subdirectories. 
+
+_saxon9he.jar_ is located at _/srv/basex/lib/custom/saxon9he.jar_. You can access it from the command line with `java -jar /srv/basex/lib/custom/saxon9he.jar`.
 
 ____
 
 ## Official BaseX documentation
 
 1. Docker: <http://docs.basex.org/wiki/Docker>
-2. Saxon: <http://docs.basex.org/wiki/XSLT_Module>
-3. XSLT: <http://docs.basex.org/wiki/XSLT_Module>
+1. XSLT: <http://docs.basex.org/wiki/XSLT_Module>
 
 
