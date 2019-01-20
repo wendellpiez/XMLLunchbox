@@ -7,7 +7,19 @@ This document describes how to run [BaseX](http://basex.org/) inside a [Docker](
 
 ## Initial configuration
 
-You only need to complete the steps in this section once.
+You only need to complete the steps in this section once. When it is finished, you will have created the following directory structure:
+
+```txt
+├── Dockerfile
+├── LICENSE
+├── README.md
+├── basex
+│   └── lib
+│       └── custom
+│           └── saxon9he.jar
+├── boxer-cl.sh
+└── boxer.sh
+```
 
 ### Create a working directory
 
@@ -15,7 +27,7 @@ Create a new directory. Ours is called _docker-basex_, we’ll refer to it that 
 
 ### Make Saxon available
 
-Download the latest version of Saxon HE from <https://sourceforge.net/projects/saxon/files/Saxon-HE/>, and unzip it. Inside your working directory, create a _lib_ subdirectory, and within that create a _custom_ subdirectory. Copy the _saxon9he.jar_ file into that _custom_ subdirectory.
+Download the latest version of Saxon HE from <https://sourceforge.net/projects/saxon/files/Saxon-HE/>, and unzip it. Inside your working directory, create a _basex_ subdirectory, inside that create a _lib_ subdirectory, and inside that create a _custom_ subdirectory. Copy the _saxon9he.jar_ file into that _custom_ subdirectory.
 
 ### Create a Dockerfile
 
@@ -69,7 +81,7 @@ Change the permissions to make the file executable.
 
 ## Run Boxer
 
-Open a terminal, navigate to your _docker_basex_ directory, and run `./boxer.sh`. This launches BaseX inside the container. The steps below all depend on your already having launched the Boxer server in this way.
+Open a terminal, navigate to your _docker-basex_ directory, and run `./boxer.sh`. This launches BaseX inside the container. The steps below all depend on your already having launched the Boxer server in this way. When you are finished, you can shut down the container by typing _Ctrl-c_ in this terminal window.
 
 ### Test your running instance
 
@@ -87,7 +99,7 @@ At the BaseX command line that you opened above, run `xquery xslt:processor()`. 
 
 ### Access the unix command line
 
-In a differet terminal window, also inside your _docker-basex_ directory, run `docker exec -it boxer bash`. You will be deposited at a regular unix command prompt inside your _boxer_ container. Your userid is “basex”, you are located at _/srv_, and your BaseX resouces are at _/srv/basex_. From the BaseX resources listed in the [full distribution](http://docs.basex.org/wiki/Startup#Full_Distributions), you have the _data_, _lib_, _repo_, and _webapp_ subdirectories. 
+In a differet terminal window, also inside your _docker-basex_ directory, run `docker exec -it boxer bash`. You will be deposited at a regular unix command prompt inside your _boxer_ container. Your userid is “basex”, you are located at _/srv_, and your BaseX resouces are at _/srv/basex_. From among the BaseX resources listed in the [full distribution](http://docs.basex.org/wiki/Startup#Full_Distributions), you have the _data_, _lib_, _repo_, and _webapp_ subdirectories. 
 
 _saxon9he.jar_ is located at _/srv/basex/lib/custom/saxon9he.jar_. You can access it from the command line with `java -jar /srv/basex/lib/custom/saxon9he.jar`.
 
