@@ -18,7 +18,6 @@ FROM basex/basexhttp:latest
 USER root
 RUN apk update
 USER basex
-CMD ["start.sh"]
 ```
 
 ### Create a Docker container
