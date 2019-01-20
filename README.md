@@ -11,8 +11,6 @@ You only need to complete the steps in this section once. When it is finished, y
 
 ```txt
 ├── Dockerfile
-├── LICENSE
-├── README.md
 ├── basex
 │   └── lib
 │       └── custom
