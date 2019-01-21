@@ -44,8 +44,10 @@ ENV CLASSPATH '/srv/basex/lib/custom/saxon9he.jar'
 Inside your _docker-basex_ directory run:
 
 ```bash
-docker build -t boxer
+docker build -t boxer .
 ```
+
+Note that there is a dot at the end of the line.
 
 ### Create a script to launch Boxer
 
