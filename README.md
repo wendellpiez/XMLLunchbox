@@ -11,12 +11,29 @@ You only need to complete the steps in this section once. When it is finished, y
 
 ```txt
 ├── Dockerfile
+├── LICENSE
+├── README.md
 ├── basex
-│   └── lib
-│       └── custom
-│           └── saxon9he.jar
+│   └── data
 ├── boxer-cl.sh
-└── boxer.sh
+├── boxer.sh
+└── saxon
+    ├── doc
+    │   ├── img
+    │   │   ├── logo_crop-mid-blue-background.gif
+    │   │   └── saxonica_logo.gif
+    │   ├── index.html
+    │   └── saxondocs.css
+    ├── notices
+    │   ├── CERN.txt
+    │   ├── HRLDCPR.txt
+    │   ├── JAMESCLARK.txt
+    │   ├── LICENSE.txt
+    │   ├── THAI.txt
+    │   └── UNICODE.txt
+    ├── saxon9-test.jar
+    ├── saxon9-xqj.jar
+    └── saxon9he.jar
 ```
 
 ### Create a working directory
@@ -25,7 +42,7 @@ Create a new directory. Ours is called _docker-basex_, we’ll refer to it that 
 
 ### Make Saxon available
 
-Download the latest version of Saxon HE from <https://sourceforge.net/projects/saxon/files/Saxon-HE/>, and unzip it. Inside your working directory, create a _basex_ subdirectory, inside that create a _lib_ subdirectory, and inside that create a _custom_ subdirectory. Copy the _saxon9he.jar_ file into that _custom_ subdirectory.
+Download the latest version of Saxon HE from <https://sourceforge.net/projects/saxon/files/Saxon-HE/>. Inside your working directory, create a _saxon_ subdirectory and unzip the Saxon zip into there. The only file we use is _saxon9he.jar_, but we provide the entire distribution to ensure that all licensing information is included properly. 
 
 ### Create a Dockerfile
 
@@ -35,8 +52,8 @@ Copy the following text to a file called _Dockerfile_ inside your _docker-basex_
 FROM basex/basexhttp:latest
 USER root
 RUN apk update
+COPY saxon/saxon9he.jar /usr/src/basex/basex-api/lib/saxon9he.jar
 USER basex
-ENV CLASSPATH '/srv/basex/lib/custom/saxon9he.jar'
 ```
 
 ### Build a Docker container
@@ -101,7 +118,7 @@ At the BaseX command line that you opened above, run `xquery xslt:processor()`. 
 
 In a different terminal window, also inside your _docker-basex_ directory, run `docker exec -it boxer bash`. You will be deposited at a regular unix command prompt inside your _boxer_ container. Your userid is “basex”, you are located at _/srv_, and your BaseX resources are at _/srv/basex_. From among the BaseX resources listed in the [full distribution](http://docs.basex.org/wiki/Startup#Full_Distributions), you have the _data_, _lib_, _repo_, and _webapp_ subdirectories. 
 
-_saxon9he.jar_ is located at _/srv/basex/lib/custom/saxon9he.jar_. You can access it from the command line with `java -jar /srv/basex/lib/custom/saxon9he.jar`.
+_saxon9he.jar_ is located inside the container at _/usr/src/basex/basex-api/lib/saxon9he.jar_. BaseX automatically knows to use it for XSLT transformations, and you can access it from the command line with `java -jar /usr/src/basex/basex-api/lib/saxon9he.jar`.
 
 ____
 
