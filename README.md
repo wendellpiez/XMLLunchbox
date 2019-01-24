@@ -1,5 +1,5 @@
-# Boxer
-Run BaseX in a Docker container with saxon. We call this configuration _Boxer_.
+# BoxerXML
+Run BaseX in a Docker container with saxon. We call this configuration _BoxerXML_.
 
 ## Install Docker
 
@@ -66,7 +66,7 @@ docker build -t boxer .
 
 Note that there is a dot at the end of the line.
 
-### Create a script to launch Boxer
+### Create a script to launch BoxerXML
 
 Copy the following text to a file called _boxer.sh_ inside your _docker-basex_ directory:
 
@@ -96,9 +96,9 @@ docker run -ti \
 
 Change the permissions to make the file executable.
 
-## Run Boxer
+## Run BoxerXML
 
-Open a terminal, navigate to your _docker-basex_ directory, and run `./boxer.sh`. This launches BaseX inside the container. The steps below all depend on your already having launched the Boxer server in this way. When you are finished, you can shut down the container by typing _Ctrl-c_ in this terminal window.
+Open a terminal, navigate to your _docker-basex_ directory, and run `./boxer.sh`. This launches BaseX inside the container. The steps below all depend on your already having launched the BoxerXML server in this way. When you are finished, you can shut down the container by typing _Ctrl-c_ in this terminal window.
 
 ### Test your running instance
 
