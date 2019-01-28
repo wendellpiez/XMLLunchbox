@@ -27,15 +27,14 @@ function page:start_stacker(
       <h3>Running { xslt:processor() }</h3>
       <h4>Or return to <a href="/">BaseX HTTP Services on this host</a>.</h4>
       {
-      let $xslt := 'iching/cast-yarrow-sticks.xsl';
-      let $params := map { "seed": " Running XML Stacker " };
-      
-      
-      try { xslt:transform($xslt, $xslt, $params ) }
-   catch * { document {
-      <EXCEPTION>
-        { 'EXCEPTION [' ||  $err:code || '] XSLT failed: ' || $stylesheet || ': ' || normalize-space($err:description) }
-</EXCEPTION> } }
+      let $greeting := 'hello-world.xml'
+      let $xslt     := 'hello-world.xsl'
+      return
+        try { xslt:transform($greeting, $xslt, () ) }
+        catch * { document {
+           <EXCEPTION>
+            { 'EXCEPTION [' ||  $err:code || '] XSLT failed: ' || $xslt || ': ' || normalize-space($err:description) }
+           </EXCEPTION> } }
       }
     </body>
   </html>

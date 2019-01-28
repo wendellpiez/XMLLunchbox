@@ -9,9 +9,9 @@ USER basex
 
 # Copy BoxerXML resources into BaseX
 #   ... BoxerXML XQuery modules plus anything local ...
-COPY repo   /srv/basex/repo
+COPY basex/repo   /srv/basex/repo
 #   ... applications with their data ...
-COPY webapp /srv/basex/webapp
+COPY basex/webapp /srv/basex/webapp
 
 # to invoke:
 # docker run -d -p 1984:1984 -p 8884:8984 boxer:latest
