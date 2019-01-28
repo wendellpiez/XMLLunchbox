@@ -19,9 +19,10 @@ You only need to complete the steps in this section once. When it is finished, y
 ├── LICENSE
 ├── README.md
 ├── basex
-│   └── data
-├── boxer-cl.sh
-├── boxer.sh
+│   └── webapp
+│   └── ... some other stuff
+├── stack-cl.sh
+├── stack.sh
 └── saxon
     ├── doc
     │   ├── img
@@ -43,7 +44,7 @@ You only need to complete the steps in this section once. When it is finished, y
 
 ### Create a working directory
 
-Create a new directory. Ours is called _docker-basex_, we’ll refer to it that way below, and all instructions below should be performed from within this directory.
+Create a new directory. Ours is called _xmlstacker_, we’ll refer to it that way below, and all instructions below should be performed from within this directory.
 
 ### Make Saxon available
 
@@ -63,47 +64,48 @@ USER basex
 
 ### Build a Docker container
 
-Inside your _docker-basex_ directory run:
+Inside your _xmlstacker_ directory run:
 
 ```bash
-docker build -t boxer .
+docker build -t xmlstacker .
 ```
 
 Note that there is a dot at the end of the line.
 
 ### Create a script to launch BoxerXML
 
-Copy the following text to a file called _boxer.sh_ inside your _docker-basex_ directory:
+Copy the following text to a file called _stack.sh_ inside your _xmlstacker_ directory:
 
 ```bash
 #!/bin/bash
 docker run -it \
-	--name boxer \
+	--name xmlstacker \
 	--publish 1984:1984 \
 	--publish 8984:8984 \
-	--volume "$(pwd)/basex/data":/srv/basex/data \
-	--volume "$(pwd)/basex/lib/custom":/srv/basex/lib/custom \
+    --volume "$(pwd)/basex/data":/srv/basex/data \
+    --volume "$(pwd)/basex/webapp":/srv/basex/webapp \
+    --volume "$(pwd)/basex/repo":/srv/basex/repo \
 	--rm \
-	boxer
+	xmlstacker
 ```
 
 Change the permissions to make the file executable.
 
 ### Create a script to provide command-line access to BaseX
 
-Copy the following text to a file called _boxer-cl.sh_ inside your _docker-basex_ directory:
+Copy the following text to a file called _stack-cl.sh_ inside your _xmlstacker_ directory:
 
 ```bash
 docker run -ti \
-    --link boxer:boxer \
-    basex/basexhttp:latest basexclient -nboxer
+    --link xmlstacker:xmlstacker \
+    basex/basexhttp:latest basexclient -nxmlstacker
 ```
 
 Change the permissions to make the file executable.
 
 ## Run BoxerXML
 
-Open a terminal, navigate to your _docker-basex_ directory, and run `./boxer.sh`. This launches BaseX inside the container. The steps below all depend on your already having launched the BoxerXML server in this way. When you are finished, you can shut down the container by typing _Ctrl-c_ in this terminal window.
+Open a terminal, navigate to your _xmlstacker_ directory, and run `./stack.sh`. This launches BaseX inside the container. The steps below all depend on your already having launched the XMLStacker BaseX server in this way. When you are finished, you can shut down the container by typing _Ctrl-c_ in this terminal window.
 
 ### Test your running instance
 
@@ -113,7 +115,7 @@ from your browser address bar. If you are asked for credentials, authenticate wi
 
 ### Test your access to the BaseX command line
 
-In a different terminal window, also inside your _docker-basex_ directory, run `./boxer-cl.sh`. Authenticate with userid “admin” and password “admin”. You should be deposited at the BaseX command line. Type `xquery current-date()` and hit the Enter key. It should return the current date.
+In a different terminal window, also inside your _docker-basex_ directory, run `./stack-cl.sh`. Authenticate with userid “admin” and password “admin”. You should be deposited at the BaseX command line. Type `xquery current-date()` and hit the Enter key. It should return the current date.
 
 ### Verify your XSLT processor
 
@@ -121,7 +123,9 @@ At the BaseX command line that you opened above, run `xquery xslt:processor()`. 
 
 ### Access the unix command line
 
-In a different terminal window, also inside your _docker-basex_ directory, run `docker exec -it boxer bash`. You will be deposited at a regular unix command prompt inside your _boxer_ container. Your userid is “basex”, you are located at _/srv_, and your BaseX resources are at _/srv/basex_. From among the BaseX resources listed in the [full distribution](http://docs.basex.org/wiki/Startup#Full_Distributions), you have the _data_, _lib_, _repo_, and _webapp_ subdirectories. 
+In a different terminal window, also inside your _xmlstacker_ directory, run `docker exec -it xmlstacker bash`. You will be deposited at a regular unix command prompt inside your _boxer_ container. Your userid is “basex”, you are located at _/srv_, and your BaseX resources are at _/srv/basex_. From among the BaseX resources listed in the [full distribution](http://docs.basex.org/wiki/Startup#Full_Distributions), you have the _data_, _lib_, _repo_, and _webapp_ subdirectories. 
+
+Note that several of these are additionally available as bound volumes on your system, that is, external to the container, so that BaseX running inside the container may be configured to run with your data or extensions, maintained externally.
 
 _saxon9he.jar_ is located inside the container at _/usr/src/basex/basex-api/lib/saxon9he.jar_. BaseX automatically knows to use it for XSLT transformations, and you can access it from the command line with `java -jar /usr/src/basex/basex-api/lib/saxon9he.jar`.
 
