@@ -1,5 +1,10 @@
-# BoxerXML
-Run BaseX in a Docker container with saxon. We call this configuration _BoxerXML_.
+# StackerXML
+
+BaseX with Saxon in Docker. Stacker.
+
+Inside Docker, a complete XML stack including the BaseX database with file system access along with the state of the art XSLT 3.0 transformation engine, SaxonHE, for XSLT on demand, in pipelines, or as an accessory engine. Optionally, include support for delivering compiled XSLT transformation code (for the freely distributed SaxonJS processor) for end users to run XSLT at home.
+
+Many thanks to @djbpitt for getting this started.
 
 ## Install Docker
 

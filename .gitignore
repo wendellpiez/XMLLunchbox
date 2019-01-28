@@ -15,3 +15,7 @@ basex/webapp/chat
 basex/webapp/dba
 basex/webapp/.logs
 basex/repo/http-www.functx.com-1.0
+# not backing this stuff up either
+basex/webapp/static
+basex/webapp/WEB-INF
+
