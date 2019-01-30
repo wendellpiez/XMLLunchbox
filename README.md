@@ -2,7 +2,9 @@
 
 BaseX with Saxon in Docker. A complete and full-featured XQuery/XSLT 3.0 web application solution.
 
-Inside Docker, run the BaseX database with file system access along with the state of the art XSLT 3.0 transformation engine, SaxonHE, for XSLT on demand, in pipelines, or as an accessory engine. Optionally, include support for delivering compiled XSLT transformation code (for the freely distributed SaxonJS processor) for end users to run XSLT at home.
+Inside Docker, run the BaseX database with file system access along with the state of the art XSLT 3.0 transformation engine, SaxonHE, for XSLT on demand, in pipelines or as an accessory engine. The architecture is RestXQ: a request for a web page is answered by a server that executes an XQuery transformation, running over a database or serialized data set as inputs. These little XQueries are easy to write - especially if all the logic happens in an XSLT you call out to. The combination has all the flexibility and power of XML, XSLT and XQuery working together and complementing each other.
+
+Optionally, include support for delivering compiled XSLT transformation code (for the freely distributed SaxonJS processor) for end users to run XSLT applications in their browsers.
 
 Many thanks to @djbpitt for getting this started.
 
@@ -20,7 +22,7 @@ You only need to complete the steps in this section once. When it is finished, y
 ├── README.md
 ├── basex
 │   └── webapp
-│   └── ... some other stuff
+│   └── repo
 ├── lunch-cl.sh
 ├── lunch.sh
 └── saxon
@@ -44,7 +46,9 @@ You only need to complete the steps in this section once. When it is finished, y
 
 ### Create a working directory
 
-Create a new directory. Ours is called _lunchbox_, we’ll refer to it that way below, and all instructions below should be performed from within this directory.
+Create a new directory. Ours is called _xmllunchbox_, we’ll refer to it that way below, and all instructions below should be performed from within this directory.
+
+Note that case matters. If you plan to extend or build into the framework, you could name your directory after your project.
 
 ### Make Saxon available
 
@@ -52,7 +56,7 @@ Download the latest version of Saxon HE from <https://sourceforge.net/projects/s
 
 ### Create a Dockerfile
 
-Copy the following text to a file called _Dockerfile_ inside your _docker-basex_ directory:
+Copy the following text to a file called _Dockerfile_ inside your _xmllunchbox_ (or other project) directory:
 
 ```bash
 FROM basex/basexhttp:latest
@@ -60,11 +64,16 @@ USER root
 RUN apk update
 COPY saxon/saxon9he.jar /usr/src/basex/basex-api/lib/saxon9he.jar
 USER basex
+COPY basex/repo   /srv/basex/repo
+COPY basex/webapp /srv/basex/webapp
 ```
+
+NB: in the distibution there is a `Dockerfile` with the same instructions, but also commented.
+
 
 ### Build a Docker container
 
-Inside your _lunchbox_ directory run:
+Inside your _xmllunchbox_ (project) directory run:
 
 ```bash
 docker build -t xmllunchbox .
@@ -72,9 +81,11 @@ docker build -t xmllunchbox .
 
 Note that there is a dot at the end of the line.
 
+This instruction gives the name (tag) `xmllunchbox` to the container. You might wish to assign your own name, or let Docker assign one of its whimsical random names (just leave the `-t xmllunchbox` flag off).
+
 ### Create a script to launch the XMLLunchbox server
 
-Copy the following text to a file called _lunch.sh_ (or a name of your choice) inside your _lunchbox_ directory:
+Copy the following text to a file called _lunch.sh_ (or a name of your choice) inside your _xmllunchbox_ directory:
 
 ```bash
 #!/bin/bash
@@ -91,6 +102,8 @@ docker run -it \
 
 Change the permissions to make the file executable.
 
+This example assumes your container is named `xmllunchbox`: adjust accordingly.
+
 ### Create a script to provide command-line access to BaseX
 
 Copy the following text to a file called _lunch-cl.sh_ inside your _lunchbox_ directory:
@@ -103,9 +116,11 @@ docker run -ti \
 
 Change the permissions to make the file executable.
 
+Here again we assume the name `xmllunchbox`.
+
 ## Run XML Lunchbox
 
-Open a terminal, navigate to your _lunchbox_ directory, and run `./lunch.sh`. This launches BaseX inside the container. The steps below all depend on your already having launched the XMLLunchbox BaseX server in this way. When you are finished, you can shut down the container by typing _Ctrl-c_ in this terminal window.
+Open a terminal, navigate to your _xmllunchbox_ (project) directory, and run `./lunch.sh`. This launches BaseX inside the container. The steps below all depend on your already having launched the XMLLunchbox BaseX server in this way. When you are finished, you can shut down the container by typing _Ctrl-c_ in this terminal window.
 
 ### Test your running instance
 
@@ -129,6 +144,10 @@ In a different terminal window, also inside your _lunchbox_ directory, run `dock
 Note that several of these are additionally available as bound volumes on your system, that is, external to the container, so that BaseX running inside the container may be configured to run with your data or extensions, maintained externally.
 
 _saxon9he.jar_ is located inside the container at _/usr/src/basex/basex-api/lib/saxon9he.jar_. BaseX automatically knows to use it for XSLT transformations, and you can access it from the command line with `java -jar /usr/src/basex/basex-api/lib/saxon9he.jar`.
+
+### Extending the application suite
+
+XML Lunchbox is built to support building and deploying your own XML/XQuery/XSLT applications -- even developing your code base and/or data set outside the container. We will be documenting this further as we try and test this capability.
 
 ____
 
