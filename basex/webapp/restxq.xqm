@@ -1,6 +1,6 @@
 (:~
  : This module contains some basic examples for RESTXQ annotations.
- : @author BaseX Team
+ : @author BaseX Team with slight mod by wendellpiez@github
  :)
 module namespace page = 'http://basex.org/modules/web-page';
 
