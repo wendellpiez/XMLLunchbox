@@ -27,7 +27,9 @@
             </head>
             <body>
                 <xsl:apply-templates select="$cast" mode="read"/>
-                <div style="font-size:smaller">Notes are only Wikipedia's: please use your own sources. This page is dedicated with thanks to all those who have coded I Ching (<i>Yi jing</i>) at any time — or who might still.</div>
+                <div style="font-size:smaller">
+                    <p>The notes are Wikipedia's: please refer to your sources.</p>
+                </div>
             </body>
         </html>
         <!--<xsl:copy-of select="$cast"/>-->

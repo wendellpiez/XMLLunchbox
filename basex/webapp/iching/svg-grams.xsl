@@ -46,9 +46,10 @@
         </xsl:template>
             
         <xsl:template mode="svg-line" match="日[@to = '月']"><!--———o———-->
-            <text fill="red" font-size="6" y="2">9</text>
+            <text font-size="6" y="2">9</text>
             <path d="m 10 0 h 60" stroke-width="6" stroke="black" fill="none"/>
             <!--<path d="m 35 0 h 10" stroke-width="2" stroke="red" fill="none"/>-->
+            <circle cx="40" cy="0" r="1" fill="white"/>
         </xsl:template>
         <xsl:template mode="svg-line" match="月"><!--——— ———-->
             <text font-size="6" y="2">7</text>
@@ -56,10 +57,11 @@
             <path d="m 45 0 h 25" stroke-width="6" stroke="black" fill="none"/>
         </xsl:template>
         <xsl:template mode="svg-line" match="月[@to = '日']"><!--———x———-->
-            <text fill="red" font-size="6" y="2">6</text>
+            <text font-size="6" y="2">6</text>
             <path d="m 10 0 h 25" stroke-width="6" stroke="black" fill="none"/>
             <path d="m 45 0 h 25" stroke-width="6" stroke="black" fill="none"/>
             <!--<path d="m 35 0 h 10" stroke-width="2" stroke="red" fill="none"/>-->
+            <circle cx="40" cy="0" r="1" fill="black"/>
         </xsl:template>
         
 </xsl:stylesheet>

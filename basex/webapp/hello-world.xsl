@@ -7,11 +7,11 @@
     version="3.0">
     
     <xsl:template match="/*">
-        <h2>Greeting not recognized</h2>
+        <h2 xsl:expand-text="true">Greeting <i>{ name() }</i> not recognized</h2>
     </xsl:template>
 
-    <xsl:template priority="2" match="/hello" expand-text="true">
-        <h1>Hello { . }</h1>
+    <xsl:template priority="2" match="/hello">
+        <h1 xsl:expand-text="true">Hello { . }</h1>
     </xsl:template>
     
     
