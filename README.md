@@ -1,8 +1,8 @@
-# StackerXML
+# XML Lunchbox
 
-BaseX with Saxon in Docker. Stacker.
+BaseX with Saxon in Docker. A complete and full-featured XQuery/XSLT 3.0 web application solution.
 
-Inside Docker, a complete XML stack including the BaseX database with file system access along with the state of the art XSLT 3.0 transformation engine, SaxonHE, for XSLT on demand, in pipelines, or as an accessory engine. Optionally, include support for delivering compiled XSLT transformation code (for the freely distributed SaxonJS processor) for end users to run XSLT at home.
+Inside Docker, run the BaseX database with file system access along with the state of the art XSLT 3.0 transformation engine, SaxonHE, for XSLT on demand, in pipelines, or as an accessory engine. Optionally, include support for delivering compiled XSLT transformation code (for the freely distributed SaxonJS processor) for end users to run XSLT at home.
 
 Many thanks to @djbpitt for getting this started.
 
@@ -21,8 +21,8 @@ You only need to complete the steps in this section once. When it is finished, y
 ├── basex
 │   └── webapp
 │   └── ... some other stuff
-├── stack-cl.sh
-├── stack.sh
+├── lunch-cl.sh
+├── lunch.sh
 └── saxon
     ├── doc
     │   ├── img
@@ -44,7 +44,7 @@ You only need to complete the steps in this section once. When it is finished, y
 
 ### Create a working directory
 
-Create a new directory. Ours is called _xmlstacker_, we’ll refer to it that way below, and all instructions below should be performed from within this directory.
+Create a new directory. Ours is called _lunchbox_, we’ll refer to it that way below, and all instructions below should be performed from within this directory.
 
 ### Make Saxon available
 
@@ -64,66 +64,67 @@ USER basex
 
 ### Build a Docker container
 
-Inside your _xmlstacker_ directory run:
+Inside your _lunchbox_ directory run:
 
 ```bash
-docker build -t xmlstacker .
+docker build -t xmllunchbox .
 ```
 
 Note that there is a dot at the end of the line.
 
-### Create a script to launch BoxerXML
+### Create a script to launch the XMLLunchbox server
 
-Copy the following text to a file called _stack.sh_ inside your _xmlstacker_ directory:
+Copy the following text to a file called _lunch.sh_ (or a name of your choice) inside your _lunchbox_ directory:
 
 ```bash
 #!/bin/bash
 docker run -it \
-	--name xmlstacker \
+	--name xmllunchbox \
 	--publish 1984:1984 \
 	--publish 8984:8984 \
     --volume "$(pwd)/basex/data":/srv/basex/data \
     --volume "$(pwd)/basex/webapp":/srv/basex/webapp \
     --volume "$(pwd)/basex/repo":/srv/basex/repo \
 	--rm \
-	xmlstacker
+	xmllunchbox
 ```
 
 Change the permissions to make the file executable.
 
 ### Create a script to provide command-line access to BaseX
 
-Copy the following text to a file called _stack-cl.sh_ inside your _xmlstacker_ directory:
+Copy the following text to a file called _lunch-cl.sh_ inside your _lunchbox_ directory:
 
 ```bash
 docker run -ti \
-    --link xmlstacker:xmlstacker \
-    basex/basexhttp:latest basexclient -nxmlstacker
+    --link xmllunchbox:xmllunchbox \
+    basex/basexhttp:latest basexclient -nxmllunchbox
 ```
 
 Change the permissions to make the file executable.
 
-## Run BoxerXML
+## Run XML Lunchbox
 
-Open a terminal, navigate to your _xmlstacker_ directory, and run `./stack.sh`. This launches BaseX inside the container. The steps below all depend on your already having launched the XMLStacker BaseX server in this way. When you are finished, you can shut down the container by typing _Ctrl-c_ in this terminal window.
+Open a terminal, navigate to your _lunchbox_ directory, and run `./lunch.sh`. This launches BaseX inside the container. The steps below all depend on your already having launched the XMLLunchbox BaseX server in this way. When you are finished, you can shut down the container by typing _Ctrl-c_ in this terminal window.
 
 ### Test your running instance
 
 1. Run `http://localhost:8984/rest/?query=<h1>{current-date()}</h1>`
 from your browser address bar. If you are asked for credentials, authenticate with userid “admin” and password “admin”. It should return the current date.
 1. Run `curl -u admin:admin -i "http://localhost:8984/rest?query=current-date()"` from the command line. It should also return the current date.
+1. Point your browser at http://localhost:8984/XMLLunchbox. You should see a demonstration and/or links to demonstrations.
 
 ### Test your access to the BaseX command line
 
-In a different terminal window, also inside your _docker-basex_ directory, run `./stack-cl.sh`. Authenticate with userid “admin” and password “admin”. You should be deposited at the BaseX command line. Type `xquery current-date()` and hit the Enter key. It should return the current date.
+In a different terminal window, also inside your _docker-basex_ directory, run `./lunch-cl.sh`. Authenticate with userid “admin” and password “admin”. You should be deposited at the BaseX command line. Type `xquery current-date()` and hit the Enter key. It should return the current date.
 
 ### Verify your XSLT processor
 
-At the BaseX command line that you opened above, run `xquery xslt:processor()`. It should return “Saxon HE”.
+At the BaseX command line that you opened above, run `xquery xslt:processor()`. It should return “Saxon HE”. (This will also be reported in the web application.)
 
 ### Access the unix command line
 
-In a different terminal window, also inside your _xmlstacker_ directory, run `docker exec -it xmlstacker bash`. You will be deposited at a regular unix command prompt inside your _boxer_ container. Your userid is “basex”, you are located at _/srv_, and your BaseX resources are at _/srv/basex_. From among the BaseX resources listed in the [full distribution](http://docs.basex.org/wiki/Startup#Full_Distributions), you have the _data_, _lib_, _repo_, and _webapp_ subdirectories. 
+In a different terminal window, also inside your _lunchbox_ directory, run `docker exec -it xmllunchbox bash`. You will be deposited at a regular unix command prompt inside your _xmllunchbox_ container. Your userid is “basex”, you are located at _/srv_, and your BaseX resources are at _/srv/basex_. From among the BaseX resources listed in the [full distribution](http://docs.basex.org/wiki/Startup#Full_Distributions), you have the _data_, _lib_, _repo_, and _webapp_ subdirectories. 
 
 Note that several of these are additionally available as bound volumes on your system, that is, external to the container, so that BaseX running inside the container may be configured to run with your data or extensions, maintained externally.
 
