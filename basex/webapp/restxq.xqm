@@ -24,7 +24,7 @@ function page:start(
     <body>
       <div class="right"><a href='/'><img src="static/basex.svg"/></a></div>
       <h1>BaseX HTTP Services</h1>
-      <h2>This installation is running <a href="boxerxml">BoxerXML</a></h2>
+      <h2>This installation is running <a href="lunchbox">XML Lunchbox</a></h2>
       <h3>Running { xslt:processor() }</h3>
       <div>Welcome to the BaseX HTTP Services. They allow you to:</div>
       <ul>

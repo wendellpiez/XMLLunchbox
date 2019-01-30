@@ -62,16 +62,16 @@
     <xsl:template mode="line-proxy" match=".">
         <boo/>
     </xsl:template>
-    <xsl:template mode="line-proxy" match=".[.=6]">
+    <xsl:template mode="line-proxy" match=".[xs:integer(.) eq 6]">
         <月 to="日"/>
     </xsl:template>
-    <xsl:template mode="line-proxy" match=".[.=7]">
+    <xsl:template mode="line-proxy" match=".[xs:integer(.) eq 7]">
         <月/>
     </xsl:template>
-    <xsl:template mode="line-proxy" match=".[.=8]">
+    <xsl:template mode="line-proxy" match=".[xs:integer(.) eq 8]">
         <日/>
     </xsl:template>
-    <xsl:template mode="line-proxy" match=".[.=9]">
+    <xsl:template mode="line-proxy" match=".[xs:integer(.) eq 9]">
         <日 to="月"/>
     </xsl:template>
     
@@ -155,14 +155,13 @@
     </xsl:template>
 
     <xsl:variable name="probabilities" as="element()">
-        <!-- ⚊ yang monogram ⚋ yin monogram -->
-<!-- But we use kanji for sun and moon for Yang and Yin
-     (element names)
-        note their actual characters
+        <!-- Probabilies are as given here: https://en.wikibooks.org/wiki/I_Ching/The_Ancient_Yarrow_Stalk_Method
         
+        yin/yang, traditional Han 陰陽
+        yin/yang, simplified Chinese 阴阳
+        here we use 月 ('moon') and 日 ('sun') for the sake of legibility 
         -->
-        <!-- Probabilies are as given here: https://en.wikibooks.org/wiki/I_Ching/The_Ancient_Yarrow_Stalk_Method -->
-        
+        <!-- ⚊ yang monogram ⚋ yin monogram -->
         <chart>
             <日 to="月"/>
             <!-- changing yang -->
@@ -188,7 +187,9 @@
     </xsl:variable>
 
     <!-- p 722 Richard Wilhelm (Bollingen ed.) -->
-    <xsl:template mode="draw" match="日">———————</xsl:template>
+    <!-- xpath-default-namespace="http://wendellpiez.com/iching"
+       -->
+    <xsl:template mode="draw" match="日" >———————</xsl:template>
     <xsl:template mode="draw" match="日[@to = '月']">———o———</xsl:template>
     <xsl:template mode="draw" match="月">——— ———</xsl:template>
     <xsl:template mode="draw" match="月[@to = '日']">———x———</xsl:template>

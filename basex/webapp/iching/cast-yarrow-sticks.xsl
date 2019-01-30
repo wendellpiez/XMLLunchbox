@@ -12,6 +12,7 @@
          (in yarrowcount.xsl) -->
     
     <xsl:import href="yarrowcount.xsl"/>
+    <xsl:import href="svg-grams.xsl"/>
     
     <xsl:output indent="yes"/>
     
@@ -26,7 +27,7 @@
             </head>
             <body>
                 <xsl:apply-templates select="$cast" mode="read"/>
-                <div style="font-size:smaller">Commentary acquired from Wikipedia (but use your own sources). This page is dedicated with thanks to all those who have coded I Ching (Yi jing) at any time — or who might still.</div>
+                <div style="font-size:smaller">Notes are only Wikipedia's: please use your own sources. This page is dedicated with thanks to all those who have coded I Ching (<i>Yi jing</i>) at any time — or who might still.</div>
             </body>
         </html>
         <!--<xsl:copy-of select="$cast"/>-->
@@ -48,7 +49,9 @@
         <div class="hex current">
 <!-- draw an SVG here :-) -->
             <xsl:apply-templates mode="read" select="key('section-by-char',@char,$kingwen)/header"/>
-         
+            <div width="20%" style="float:left">
+         <xsl:apply-templates mode="svg-gram"/>
+            </div>
          <xsl:apply-templates select="." mode="changing"/>
             
             <!--<xsl:copy-of select="."/>-->
