@@ -104,6 +104,8 @@ Change the permissions to make the file executable.
 
 This example assumes your container is named `xmllunchbox`: adjust accordingly.
 
+Also, if you are only testing the application and not extending it, you can leave off the volume bindings (or whichever ones you know you do not need).
+
 ### Create a script to provide command-line access to BaseX
 
 Copy the following text to a file called _lunch-cl.sh_ inside your _lunchbox_ directory:
