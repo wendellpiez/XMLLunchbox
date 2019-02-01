@@ -9,13 +9,6 @@ basex/*
 # except the local application
 !basex/webapp
 !basex/repo
-# while ignoring some of the webapp and repo contents
-# (BaseX artifacts already in the bundle)
-basex/webapp/chat
-basex/webapp/dba
-basex/webapp/.logs
-basex/repo/http-www.functx.com-1.0
-# not backing this stuff up either
-basex/webapp/static
-basex/webapp/WEB-INF
-
+# Ignoring data directory as well (in the trunk)
+# Remove this line when you have databases to load
+!basex/data
