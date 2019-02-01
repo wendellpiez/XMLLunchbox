@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg"
+    
+    viewBox="0 0 80 80"
+    height="80"
+    width="80"
+    >
+    <desc>XML lunchbox logo</desc>
+    <g alignment-baseline="baseline">
+        
+        <g transform="translate(4 -5)">
+            
+        <rect x="12" y="27" height="50" width="60" rx="5" ry="5"
+            stroke="firebrick" stroke-width="3" stroke-opacity="0.5" fill="firebrick" fill-opacity="0.3"/>
+        
+        <rect x="20" y="32" height="18" width="24" rx="3" ry="3" fill="yellow" fill-opacity="0.5"/>
+        <rect x="20" y="52" height="18" width="45" rx="3" ry="3" fill="white" fill-opacity="0.5"/>
+        <circle fill="orange" r="9" cy="40" cx="56"/>
+        </g>
+       <g transform="translate(-10 -15) rotate(-7)">
+        <rect x="12" y="27" height="50" width="60" rx="5" ry="5"
+            stroke="firebrick" stroke-width="4" stroke-opacity="0.5" fill="firebrick" fill-opacity="0.3"/>
+       </g>
+        
+    </g>
+</svg>
