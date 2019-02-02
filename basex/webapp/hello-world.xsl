@@ -6,6 +6,7 @@
     exclude-result-prefixes="xs math"
     version="3.0">
     
+    <!-- Run on hello-world.xml for a small demo -->
     <xsl:template match="/*">
         <h2 xsl:expand-text="true">Greeting <i>{ name() }</i> not recognized</h2>
     </xsl:template>
