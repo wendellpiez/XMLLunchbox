@@ -25,7 +25,7 @@ function page:start_stacker(
       
       <div class="right"><img src="static/xmllunchbox-logo.svg"/></div>
       <h2>XML Lunchbox</h2>
-      <h3>Running { xslt:processor() }</h3>
+      <h3>Running { xslt:processor() } supporting XSLT version { xslt:version() }</h3>
       <h4>Or return to <a href="/">BaseX HTTP Services on this host</a>.</h4>
       {
       let $greeting := 'hello-world.xml'
