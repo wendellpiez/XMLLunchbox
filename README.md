@@ -21,8 +21,9 @@ You only need to complete the steps in this section once. When it is finished, y
 ├── LICENSE
 ├── README.md
 ├── basex
-│   └── webapp
+│   ├── webapp
 │   └── repo
+│       └── ...
 ├── lunch-cl.sh
 ├── lunch.sh
 └── saxon
@@ -56,21 +57,23 @@ Of course, you should also feel free to fork the project into your own repo and 
 
 ### Your working directory
 
-Create a new directory. Ours is called _XMLLunchbox_, we’ll refer to it that way below, and all instructions below should be performed from within this directory.
+Your clone will be called either _XMLLunchbox_, or something else (maybe it's a clone of a fork).
+
+Below, we refer to this project directory as _XMLLunchbox_, all instructions below should be performed from within this directory. Adjust the instructions accordingly.
 
 Note that case matters. If you plan to extend or build into the framework, you could name your directory after your project.
 
-### Check Saxon available
+### Check Saxon availability
 
 The installation includes a copy of SaxonHE, the open source version of the leading Java XSLT engine produced by Michael Kay and Saxonica.
 
 To replace or upgrade, download the latest version of Saxon HE from <https://sourceforge.net/projects/saxon/files/Saxon-HE/>. Inside your working directory, create a _saxon_ subdirectory and unzip the Saxon zip into there. The only file we use is _saxon9he.jar_, but we provide the entire distribution to ensure that all licensing information is included properly. 
 
-### Check you Dockerfile
+### Check your Dockerfile
 
 Docker runs from a configuration file conveniently called `Dockerfile`.
 
-It should have something like the following:
+It is a plain text file (UTF-8) and should have something like the following:
 
 
 ```
@@ -85,6 +88,8 @@ COPY basex/webapp /srv/basex/webapp
 
 Our version should look like this, except with comments.
 
+To modify the configuration of the container, you will edit this file. For the most part that should not be necessary.
+
 ### Build a Docker container
 
 Assuming the `Dockerfile` is present and correct, it can be used to produce a Docker container on your system.
@@ -97,14 +102,16 @@ docker build -t xmllunchbox .
 
 Note that there is a dot at the end of the line.
 
+Docker recognizes the configuration given in `Dockerfile` and installs the container on your system.
+
 This instruction gives the name (tag) `xmllunchbox` to the container. You might wish to assign your own name, or let Docker assign one of its whimsical random names (just leave the `-t xmllunchbox` flag off).
 
 ### Check and tweak the launch scripts 
 
-To run, your scripts must be recognized by the system as "executable"
+In the distribution are a couple of launch scripts (described in more detail below). To run, your scripts must be recognized by the system as executable. 
 
 ```
-chmod 755 *.sh
+> chmod 755 *.sh
 ```
 
 From that point, you should be able to run either script from a shell (command prompt) as described below.
@@ -112,13 +119,15 @@ From that point, you should be able to run either script from a shell (command p
 Note however that depending on your Docker installation and setup, you may need to run the scripts under `sudo`.  
 If you do not call your container `xmllunchbox`, note that the scripts will need to be edited.
 
-### Launch the container
+#### To launch the container
+
+The primary entry point for launching the web application is an executable script.
 
 ```
 > ./lunch.sh
 ```
 
-The file looks like this. Rename it and/or edit it.
+The file looks like this.
 
 
 ```bash
@@ -134,11 +143,11 @@ docker run -it \
 	xmllunchbox
 ```
 
-Note that as given, this file assumes your container is named `xmllunchbox`: adjust accordingly.
+Note that as given, this command assumes your container is named `xmllunchbox`: adjust accordingly.
 
 Also, if you are only testing the application and not extending it, you can leave off the volume bindings (or whichever ones you know you do not need). We put them in place so that they will be there when needed.
 
-### Run a shell inside the container to query BaseX
+#### To run a shell inside the container and query BaseX
 
 The script _lunch-cl.sh_ looks like this:
 
@@ -152,6 +161,8 @@ Again, be sure it has the permissions set to executable.
 
 Here again we assume the name `xmllunchbox`.
 
+This opens a `basexclient` (command line) interface to BaseX running in the container. It can be used for testing and debugging (as described further down).
+
 ## Testing XML Lunchbox
 
 Once the container has been named and built, and the scripts are in order, you can test XML Lunchbox as follows:
@@ -160,15 +171,9 @@ Once the container has been named and built, and the scripts are in order, you c
 
 Open a terminal, navigate to your _XMLLunchbox_ (project) directory, and run `./lunch.sh`. This launches BaseX inside the container. The steps below all depend on your already having launched the XMLLunchbox BaseX server in this way. When you are finished, you can shut down the container by typing _Ctrl-c_ in this terminal window.
 
-NB: you may need `sudo` permissions or the equivalent to run Docker. On Linux, to give the user privileges to run Docker, run:
+NB: you may need `sudo` permissions or the equivalent to run Docker.
 
-```
-> sudo usermod -aG docker $USER
-```
-
-where $USER is your user name.
-
-### Test your running instance
+### Test your running BaseX instance
 
 1. Run `http://localhost:8984/rest/?query=<h1>{current-date()}</h1>`
 from your browser address bar. If you are asked for credentials, authenticate with userid “admin” and password “admin”. It should return the current date.
@@ -199,11 +204,20 @@ Note that depending on how you start your container (`lunch.sh`) several of thes
 
 _saxon9he.jar_ is located inside the container at _/usr/src/basex/basex-api/lib/saxon9he.jar_. BaseX automatically knows to use it for XSLT transformations, and you can access it from the command line with `java -jar /usr/src/basex/basex-api/lib/saxon9he.jar`.
 
+## Using XMLLunchbox
+
+The Lunchbox setup comes with a small demonstration application along with a simple Hello World application (meant for editing and testing). These appear at the page http://localhost:8984/XMLLunchbox.
+
 ### Extending the application suite
 
-XML Lunchbox is built to support building and deploying your own XML/XQuery/XSLT applications -- even developing your code base and/or data set outside the container. We will be documenting this further as we try and test this capability.
+XML Lunchbox is built to support building and deploying your own XML/XQuery/XSLT applications -- even developing your code base and/or data set outside the container.
 
-For now, you can easily accomplish results by inspecting and carefully modifying the code in the distribution.
+As delivered, the `basex/webapp` and `webapp/repo` directories contain all the code BaseX needs. -- you can see and edit all the files going into these processes.
+
+Start tracing these processes by examining the nominal `.xqm` files (XQuery modules) that contain restXQ function declarations. These functions are executed in response to page requests to the server; in execution, they will typically call other XQuery functions and libraries, including (in our case) functions that execute XSLT transformations. This is an easy way to put pages online for either simple function calls and calculations, or complex operations performed over arbitrary data sets.
+
+If you start Docker with a runtime binding to the `basex/webapp` subdirectory (or with bindings to other subdirectories as needed), you can also interact with these files dynamically, as BaseX is capable of *reloading* and *re-executing* as these files change. This can easily be demonstrated by opening one of the RextXQ declaration files, making modifications, and reloading the page displayed. (Note of course that your *browser* may keep cached copies, which is a different issue.)
+
 
 ____
 
