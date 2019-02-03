@@ -28,7 +28,7 @@
             <body>
                 <xsl:apply-templates select="$cast" mode="read"/>
                 <div style="font-size:smaller">
-                    <p>The notes are Wikipedia's: please refer to your sources.</p>
+                    <p>The notes given are from Wikipedia: please refer to your sources.</p>
                 </div>
             </body>
         </html>
@@ -57,8 +57,8 @@
          <xsl:apply-templates select="." mode="changing"/>
             
             <!--<xsl:copy-of select="."/>-->
-           
             <xsl:apply-templates mode="read" select="key('section-by-char',@char,$kingwen)/(* except header)"/>
+            <xsl:apply-templates mode="ctext-link" select="key('anchor-for-hex',@char,$ctext)"/>
             
         </div>
     </xsl:template>
@@ -93,6 +93,8 @@
     <xsl:template match="becoming" mode="read">
         <div class="hex becoming">
             <xsl:apply-templates mode="read" select="key('section-by-char',@char,$kingwen)"/>
+            <xsl:apply-templates mode="ctext-link" select="key('anchor-for-hex',@char,$ctext)"/>
+            
         </div>
     </xsl:template>
     
@@ -110,4 +112,16 @@
     </xsl:template>
     
     <xsl:mode name="read" on-no-match="shallow-copy"/>
+    
+    <xsl:variable name="ctext" select="document('ctextdotorg-toc.xhtml')"/>
+    
+    <xsl:key name="anchor-for-hex" match="a" xpath-default-namespace="http://www.w3.org/1999/xhtml"
+        use="substring(.,1,1)"/>
+    
+<!-- should match an 'a' whose @href we can just splice   -->
+    <xsl:template mode="ctext-link" match="*">
+        <p>Link to <a target="ctext" href="http://ctext.org/{@href}"
+            xsl:expand-text="true">Chinese Text Project on { . }</a></p>
+    </xsl:template>
+
 </xsl:stylesheet>
