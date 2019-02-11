@@ -51,7 +51,7 @@
         <div class="hex current">
 <!-- draw an SVG here :-) -->
             <xsl:apply-templates mode="read" select="key('section-by-char',@char,$kingwen)/header"/>
-            <div width="20%" style="float:left">
+            <div width="20%" style="float:left; clear: both">
          <xsl:apply-templates mode="svg-gram"/>
             </div>
          <xsl:apply-templates select="." mode="changing"/>
