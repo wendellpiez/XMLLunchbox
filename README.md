@@ -8,17 +8,17 @@ Why run an XSLT engine inside an XQuery engine inside Java under Linux inside Do
 
 You have to install Docker; not everyone can do that. It requires a capable system. It is probably not even worth trying on a version of Windows less than a recent Windows 10 PE (Professional Edition), for example.
 
-But if you can install Docker, you need nothing else. No Java, no Java application setup, no system configuration overhead. No server or server application framework configuration. You have a few switches to control how the container will interact with your file system, and that is it. Everything else is running at your fingertips.
+But if you can install Docker, you need nothing else: XMLLunchbox does the rest for you - loading Docker with all the OS and application code and configuring it for safe execution. No Java, no Java application setup, no system configuration overhead. No server or server application framework configuration. You have a few switches to control how the container will interact with your file system, and which ports on your network it should listen to, and that is it. Everything else is running at your fingertips.
 
-So the question might also be framed, why not?
+So the question might also be framed, why not? What do you want to do with your data?
 
 ## Power, Flexibility and Security
 
-XMLLunchbox provides a self-contained, portable yet full-featured environment for data processing including full text processing. If you are processing XML or even other inputs (JSON or CSV just for example), you have here a toolkit combining XQuery with XSLT permitting the development and easy deployment of more or less any kind of data processing application you like. As a developer, you are free to focus on development and not on deployment. Instead of having to decide up front how you are going to serve the application and where, develop first and figure out the hosting later.
+XMLLunchbox provides a self-contained, portable yet full-featured environment for data processing including full text processing. If you are processing XML or even other inputs (JSON or CSV just for example), you have here a toolkit combining XQuery with XSLT permitting the development and easy deployment of more or less any kind of data processing application you like. As a developer using XMLLunchbox, and potentially in distributing derivative applications, you are free to focus on developing functionality, and not on deployment. Instead of having to decide up front how you are going to serve the application and where, build first and figure out the hosting later.
 
-Because it is self-contained and managed by Docker, a Lunchbox application can be installed, run, examined, analyzed, and removed, without any system configuration overhead. Docker, which needs to be installed only once, takes over all sysadmin chores of installing and configuring the software required internally by the XML stack. And when you are done with the application, or need to refresh it, any old versions can be easily scrubbed away.
+Because it is self-contained and managed by Docker, a Lunchbox application can be installed, run, examined, analyzed, and removed, without any system configuration overhead. Docker takes over all sysadmin chores of installing and configuring the software required internally by the XML stack inside the Lunchbox. So you can set it up easily - and take it down just as easily, ready to refresh or to sweep up.
 
-The Lunchbox is especially good if you wish to develop an experimental application for others to see, without having to run a host. Instead, your users are enabled to run their own hosts as easily as you do - which is more secure for them (since they can run self-contained applications entirely offline): they can see and examine what is running in the container on their system, without having to make any changes or configuration in the host system. And then dispose of it when they are done, without having to remove them or change them back. No more classpaths, libraries or registry bindings left behind. Lightening this overhead for yourself and your users also enables more frequent updates. And project development can be distributed, proceeding independently of any single node (server or hub) -- while applications themselves continue to offer all the capabilities of the client-server architecture, internally. 
+The Lunchbox is especially good if you wish to develop an experimental application for others to see, without wanting to support a host on a network. Instead, you run locally and you enable your users (audience) to do the same - run their own local servers. This is more secure for them: they can run self-contained applications entirely offline, and they can see and examine what is running in the container on their system, while keeping it managed and contained by the same means as you. And then dispose of it when they are done, without having to remove anything or unset or change anything back. No more classpaths, libraries or registry bindings left behind. Lightening this overhead for yourself and your users also enables more frequent updates. This also lends itself to distributed project development, in which several or many advancing fronts proceed independently of one another or any single node (server or hub) -- while applications themselves (the systems we build inside the containers) continue to offer all the capabilities of the client-server architecture, internally. 
 
 XMLLunchbox is also more secure because its own code base is explicitly managed entirely in its Docker configuration. Thus all the code running on your system is discoverable (in the base configuration: of course it is up to you as a developer to maintain this policy as well), while the languages in use -- XQuery and XSLT, with XPath 3.1 and the feature sets (including extensions) of the BaseX and Saxon open-source processing libraries -- are externally specified standards, providing a baseline for testing the conformance of your works to the standards you choose and apply as appropriate. So all your own code can be more transparent and hence more secure as well, a benefit to your own users.
 
@@ -34,7 +34,7 @@ This combination may be overpowered for any given purpose: an application might 
 
 Note that the demo application, as given, uses both XQuery and XSLT together.
 
-Many thanks to djbpitt for igniting this.
+Many thanks to djbpitt for kicking this off.
 
 ## Installation and Running
 
@@ -116,9 +116,9 @@ COPY basex/repo   /srv/basex/repo
 COPY basex/webapp /srv/basex/webapp
 ```
 
-Our version should look like this, except with comments.
+Our version looks pretty much like this, except with comments.
 
-To modify the configuration of the container, you will edit this file. For the most part that should not be necessary.
+To modify the configuration of the container, you will edit this file. For the most part that should not be necessary as these basic settings will work for most anything.
 
 #### Build a Docker container
 
@@ -226,11 +226,11 @@ At the BaseX command line that you opened above, run `xquery xslt:processor()`. 
 
 To exit this shell, use `exit` and follow its instructions.
 
-#### Access the unix command line
+#### Access the unux command line
 
 In a different terminal window, also inside your _XMLLunchbox_ directory, run `docker exec -it xmllunchbox bash`. You will be deposited at a regular unix command prompt inside your _xmllunchbox_ container. Your userid is “basex”, you are located at _/srv_, and your BaseX resources are at _/srv/basex_. From among the BaseX resources listed in the [full distribution](http://docs.basex.org/wiki/Startup#Full_Distributions), you have the _data_, _repo_, and _webapp_ subdirectories.
 
-Note that depending on how you start your container (`lunch.sh`) several of these are additionally available as bound volumes on your system, that is, external to the container, so that BaseX running inside the container may be configured to run with your data or extensions, maintained externally.
+Note that depending on how you start your container (`lunch.sh` as described above) several of these are additionally available as bound volumes on your system, that is, external to the container, so that BaseX running inside the container may be configured to run with your data or extensions, maintained externally.
 
 _saxon9he.jar_ is located inside the container at _/usr/src/basex/basex-api/lib/saxon9he.jar_. BaseX automatically knows to use it for XSLT transformations, and you can access it from the command line with `java -jar /usr/src/basex/basex-api/lib/saxon9he.jar`.
 
