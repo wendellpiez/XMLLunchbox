@@ -6,9 +6,12 @@ BaseX with Saxon in Docker. A complete and full-featured XQuery/XSLT 3.0 web app
 
 Why run an XSLT engine inside an XQuery engine inside Java under Linux inside Docker?
 
-You have to install Docker; not everyone can do that. It requires a capable system. It is probably not even worth trying on a version of Windows less than a recent Windows 10 PE (Professional Edition), for example.
+You may have heard of the legendary power of a native XML database like
+[BaseX](www.basex.org), or even rumors of XSLT running in such an environment, where its own capabilities are showcased. But these used to be hard to do, many steps, much fussing. No more.
 
-But if you can install Docker, you need nothing else: XMLLunchbox does the rest for you - loading Docker with all the OS and application code and configuring it for safe execution. No Java, no Java application setup, no system configuration overhead. No server or server application framework configuration. You have a few switches to control how the container will interact with your file system, and which ports on your network it should listen to, and that is it. Everything else is running at your fingertips.
+To run XMLLunchbox, you have to install Docker; not everyone can do that. It requires a capable system. It is probably not even worth trying on a version of Windows less than a recent Windows 10 PE (Professional Edition), for example.
+
+But if you can install Docker, you need nothing else: XMLLunchbox gives you BaseX and Saxon all loaded and ready to go, by providing or indicating for Docker all the OS and application code, and configuring it for safe execution. No Java, no Java application setup, no system configuration overhead. No server or server application framework configuration. You have a few switches to control how the container will interact with your file system, and which ports on your network it should listen to, and that is it. Everything just runs at your fingertips.
 
 So the question might also be framed, why not? What do you want to do with your data?
 
