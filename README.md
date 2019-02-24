@@ -163,7 +163,7 @@ Note however that depending on your Docker installation and setup, you may need 
 
 If you do not call your container `xmllunchbox`, note that the scripts will need to be edited.
 
-##### To launch the container
+#### To launch the container
 
 The primary entry point for launching the web application is an executable script.
 
@@ -192,7 +192,7 @@ Note that as given, this command assumes your container is named `xmllunchbox`: 
 
 Also, if you are only testing the application and not extending it, you can leave off the volume bindings (or whichever ones you know you do not need). We put them in place so that they will be there when needed.
 
-##### To run a shell inside the container and query BaseX
+#### To query BaseX from a shell inside the container
 
 The script _lunch-cl.sh_ looks like this:
 
