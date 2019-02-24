@@ -12,17 +12,25 @@ You may have heard of the legendary power of a native XML database like
 To run XMLLunchbox, you have to install Docker; not everyone can do that. It requires a capable system. It is probably not even worth trying on a version of Windows less than a recent Windows 10 PE (Professional Edition), for example. (Up-to-date Mac and Linux users should be fine.) See the 
 [Docker download page](https://www.docker.com/get-started).
 
-With Docker and a fork, clone, copy or derivate of XMLLunchbox, you need nothing else: here are BaseX and Saxon all loaded and ready to go. No Java, no Java application setup, no system configuration overhead. A robust, reliable OS underneath. No server or server application framework configuration. You have a few switches to control how the container will interact with your file system, and which ports on your network it should listen to, and that is it. Everything just runs at your fingertips.
+With Docker and a fork, clone, copy or derivative of XMLLunchbox, you need nothing else: here are BaseX and Saxon all loaded and ready to go. No Java, no Java application setup, no system configuration to take care of. A robust, reliable OS underneath. No server or server application framework. (It's there: you just don't have to mess with it.) You have a few switches to control how the container will interact with your file system, and which ports it should listen to. Everything just runs at your fingertips.
 
 So the question might also be framed, why not? What do you want to do with your data?
 
 ## Power, Flexibility and Security
 
-XMLLunchbox provides a self-contained, portable yet full-featured environment for data processing including full text processing. If you are processing XML or even other inputs (JSON or CSV just for example), you have here a toolkit combining XQuery with XSLT permitting the development and easy deployment of more or less any kind of data processing application you like. As a developer using XMLLunchbox, and potentially in distributing derivative applications, you are free to focus on developing functionality, and not on deployment. Instead of having to decide up front how you are going to serve the application and where, build first and figure out the hosting later.
+**Capable, but easy to stand up**
+
+XMLLunchbox provides a self-contained and portable, yet full-featured environment for data processing including full text processing. If you are processing XML or even other inputs (JSON or CSV just for example), you have here a toolkit combining XQuery with XSLT permitting the development and easy deployment of more or less any kind of data processing application you like. As a developer using XMLLunchbox, and potentially in distributing derivative applications, you are free to focus on developing functionality, and not on deployment. Instead of having to decide up front how you are going to serve the application and where, build first and figure out the hosting later.
+
+**Managed and disposable**
 
 Because it is self-contained and managed by Docker, a Lunchbox application can be installed, run, examined, analyzed, and removed, without any system configuration overhead. Docker takes over all sysadmin chores of installing and configuring the software required internally by the XML stack inside the Lunchbox. So you can set it up easily - and take it down just as easily, ready to refresh or to sweep up.
 
+**Viewable and sharable**
+
 The Lunchbox is especially good if you wish to develop an experimental application for others to see, without wanting to support a host on a network. Instead, you run locally and you enable your users (audience) to do the same - run their own local servers. This is more secure for them: they can run self-contained applications entirely offline, and they can see and examine what is running in the container on their system, while keeping it managed and contained by the same means as you. And then dispose of it when they are done, without having to remove anything or unset or change anything back. No more classpaths, libraries or registry bindings left behind. Lightening this overhead for yourself and your users also enables more frequent updates. This also lends itself to distributed project development, in which several or many advancing fronts proceed independently of one another or any single node (server or hub) -- while applications themselves (the systems we build inside the containers) continue to offer all the capabilities of the client-server architecture, internally. 
+
+**Distributed and secure**
 
 XMLLunchbox is also more secure because its own code base is explicitly managed entirely in its Docker configuration. Thus all the code running on your system is discoverable (in the base configuration: of course it is up to you as a developer to maintain this policy as well), while the languages in use -- XQuery and XSLT, with XPath 3.1 and the feature sets (including extensions) of the BaseX and Saxon open-source processing libraries -- are externally specified standards, providing a baseline for testing the conformance of your works to the standards you choose and apply as appropriate. So all your own code can be more transparent and hence more secure as well, a benefit to your own users.
 
@@ -30,9 +38,9 @@ XMLLunchbox is also more secure because its own code base is explicitly managed 
 
 Inside Docker, XMLLunchbox includes the state-of-the-art BaseX database -- with file system access if/as you require -- along with the de facto reference implementation for XSLT 3.0, SaxonHE from Saxonica. This combination offers XQuery, with XSLT on demand, in (composable) pipelines or as an accessory engine. Both of these are powerful technologies designed primarily but not exclusively to handle XML.
 
-The runtime application architecture is (as delivered) RestXQ: a request for a web page, from a user's browser, is answered by a server that produces a page by executing an XQuery function (optionally, with arguments mapped from the query string), running over a database or serialized data set as inputs. These little XQueries are easy to write - especially if all the logic happens in an XSLT you call out to. The combination has all the flexibility and power of XML, XSLT and XQuery working together and complementing each other.
+The runtime application architecture is (as delivered) RestXQ: a request for a web page, from a user's browser, is answered by a server that produces a page by executing an XQuery function (optionally, with arguments mapped from the query string), running over a database or serialized data set as inputs. These little XQueries are easy to write - especially when any difficult logic can be handled in an XSLT transformation you call out to. The combination has all the flexibility and power of XML, XSLT and XQuery working together and complementing each other.
 
-Optionally, the Lunchbox can also be set up to include support for delivering compiled XSLT transformation code (for the freely distributed SaxonJS processor) for end users to run XSLT applications in their browsers. While as long as we have both XQuery and XSLT in back, having XSLT again in the client, would seem to be completely overblown - it may turn out that the AJAX-like applications that resulted could be especially powerful for certain kinds of data processing scenarios.
+Optionally, the Lunchbox can also be set up to include support for delivering compiled XSLT transformation code (for the freely distributed SaxonJS processor) for end users to run XSLT applications in their browsers. While as long as we have both XQuery and XSLT in back, having XSLT again in the client, might seem to be completely overblown -- it could also turn out that the AJAX-like applications could be especially powerful for certain kinds of data processing scenarios.
 
 This combination may be overpowered for any given purpose: an application might need only a subset of these capabilities, getting by with less than the full complement of tools. The Lunchbox is designed with the premise that even if you don't always need all of it, you might at any time need any of it -- so it is good to have it. Or at least, have it available. Then when it is not needed, it can be left out.
 
@@ -40,7 +48,7 @@ Note that the demo application, as given, uses both XQuery and XSLT together.
 
 Many thanks to djbpitt for kicking this off.
 
-## Installation and Running
+## To install and run
 
 ### Install Docker
 
@@ -248,6 +256,8 @@ The Lunchbox setup comes with a small demonstration application along with a sim
 BaseX's RestXQ interfaces, which these demonstrations use, are 
 [documented on the BaseX wiki](http://docs.basex.org/wiki/RESTXQ "BaseX RestXQ docs")
 
+Beyond this, there is nothing yet to "use": the Lunchbox is empty. It is up to you to fill it with tasty treats.
+
 #### Extending the application suite
 
 XML Lunchbox is built to support building and deploying your own XML/XQuery/XSLT applications -- even developing your code base and/or data set outside the container.
@@ -258,7 +268,6 @@ Start tracing these processes by examining the nominal `.xqm` files (XQuery modu
 
 If you start Docker with a runtime binding to the `basex/webapp` subdirectory (or with bindings to other subdirectories as needed), you can also interact with these files dynamically, as BaseX is capable of *reloading* and *re-executing* as these files change. This can easily be demonstrated by opening one of the RextXQ declaration files, making modifications, and reloading the page displayed. (Note of course that your *browser* may keep cached copies, which is a different issue.)
 
-
 ____
 
 ## Official BaseX documentation
@@ -266,5 +275,3 @@ ____
 1. RestXQ <http://docs.basex.org/wiki/RESTXQ>
 1. Docker: <http://docs.basex.org/wiki/Docker>
 1. XSLT: <http://docs.basex.org/wiki/XSLT_Module>
-
-
