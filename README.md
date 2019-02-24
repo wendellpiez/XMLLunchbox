@@ -7,11 +7,12 @@ BaseX with Saxon in Docker. A complete and full-featured XQuery/XSLT 3.0 web app
 Why run an XSLT engine inside an XQuery engine inside Java under Linux inside Docker?
 
 You may have heard of the legendary power of a native XML database like
-[BaseX](www.basex.org), or even rumors of XSLT running in such an environment, where its own capabilities are showcased. But these used to be hard to do, many steps, much fussing. No more.
+[BaseX](www.basex.org), or even rumors of XSLT running in such an environment. But these used to be hard to do, many steps, much fussing. No more.
 
-To run XMLLunchbox, you have to install Docker; not everyone can do that. It requires a capable system. It is probably not even worth trying on a version of Windows less than a recent Windows 10 PE (Professional Edition), for example.
+To run XMLLunchbox, you have to install Docker; not everyone can do that. It requires a capable system. It is probably not even worth trying on a version of Windows less than a recent Windows 10 PE (Professional Edition), for example. (Up-to-date Mac and Linux users should be fine.) See the 
+[Docker download page](https://www.docker.com/get-started).
 
-But if you can install Docker, you need nothing else: XMLLunchbox gives you BaseX and Saxon all loaded and ready to go, by providing or indicating for Docker all the OS and application code, and configuring it for safe execution. No Java, no Java application setup, no system configuration overhead. No server or server application framework configuration. You have a few switches to control how the container will interact with your file system, and which ports on your network it should listen to, and that is it. Everything just runs at your fingertips.
+With Docker and a fork, clone, copy or derivate of XMLLunchbox, you need nothing else: here are BaseX and Saxon all loaded and ready to go. No Java, no Java application setup, no system configuration overhead. A robust, reliable OS underneath. No server or server application framework configuration. You have a few switches to control how the container will interact with your file system, and which ports on your network it should listen to, and that is it. Everything just runs at your fingertips.
 
 So the question might also be framed, why not? What do you want to do with your data?
 
@@ -78,7 +79,7 @@ You only need to complete the steps in this section once. When it is finished, y
     └── saxon9he.jar
 ```
 
-For now, we offer instructions on the assumption you wish to have this application "all the way down" to its foundations, which in this case are its dependencies on the (open source) projects, BaseX, Saxon and Docker.
+For now, we offer instructions on the assumption you wish to have this application all the way down to its foundations, meaning all the source code except for declared dependencies on the (open source) projects, BaseX, Saxon and Docker.
 
 In future, we may be able to offer a Docker image, so you can run the XMLLunchbox without needing a local copy of it. (Indeed when an image is available we can revise the installation for developers as well.)
 
@@ -98,9 +99,10 @@ Note that case matters. If you plan to extend or build into the framework, you c
 
 #### Check Saxon availability
 
-The installation includes a copy of SaxonHE, the open source version of the leading Java XSLT engine produced by Michael Kay and Saxonica.
+The installation includes a copy of SaxonHE, the open source version of the leading Java XSLT engine produced by
+[Saxonica](http://www.saxonica.com/welcome/welcome.xml) (Michael Kay and associates).
 
-To replace or upgrade, download the latest version of Saxon HE from <https://sourceforge.net/projects/saxon/files/Saxon-HE/>. Inside your working directory, create a _saxon_ subdirectory and unzip the Saxon zip into there. The only file we use is _saxon9he.jar_, but we provide the entire distribution to ensure that all licensing information is included properly. 
+To replace or upgrade, download the latest version of Saxon HE from <https://sourceforge.net/projects/saxon/files/Saxon-HE/>. Inside your working directory, create a _saxon_ subdirectory, and unzip the Saxon zip into it. The only file we use is _saxon9he.jar_, but we provide the entire distribution to ensure that all licensing information is included properly. 
 
 #### Check your Dockerfile
 
@@ -121,7 +123,7 @@ COPY basex/webapp /srv/basex/webapp
 
 Our version looks pretty much like this, except with comments.
 
-To modify the configuration of the container, you will edit this file. For the most part that should not be necessary as these basic settings will work for most anything.
+To modify the configuration of the container, you will edit this file. For the most part that should not be necessary as these basic settings will work for most any use, given available interfaces (client/server and REST) into BaseX.
 
 #### Build a Docker container
 
@@ -150,6 +152,7 @@ In the distribution are a couple of launch scripts (described in more detail bel
 From that point, you should be able to run either script from a shell (command prompt) as described below.
 
 Note however that depending on your Docker installation and setup, you may need to run the scripts under `sudo`.  
+
 If you do not call your container `xmllunchbox`, note that the scripts will need to be edited.
 
 ##### To launch the container
@@ -160,8 +163,9 @@ The primary entry point for launching the web application is an executable scrip
 > ./lunch.sh
 ```
 
-The file looks like this.
+If you encounter permissions errors, try `sudo ./lunch.sh` with a passwordy.
 
+The file this invokes looks like this.
 
 ```bash
 #!/bin/bash
@@ -194,7 +198,7 @@ Again, be sure it has the permissions set to executable.
 
 Here again we assume the name `xmllunchbox`.
 
-This opens a `basexclient` (command line) interface to BaseX running in the container. It can be used for testing and debugging (as described further down).
+This opens a `basexclient` (command line) interface to BaseX running in the container. It can be used for testing and debugging (as described further down) or for interacting with the running container's instance of BaseX.
 
 ### Testing XML Lunchbox
 
@@ -204,7 +208,7 @@ Once the container has been named and built, and the scripts are in order, you c
 
 Open a terminal, navigate to your _XMLLunchbox_ (project) directory, and run `./lunch.sh`. This launches BaseX inside the container. The steps below all depend on your already having launched the XMLLunchbox BaseX server in this way. When you are finished, you can shut down the container by typing _Ctrl-c_ in this terminal window.
 
-NB: you may need `sudo` permissions or the equivalent to run Docker.
+Note you may need `sudo` permissions or the equivalent to run Docker.
 
 #### Test your running BaseX instance
 
@@ -217,11 +221,11 @@ from your browser address bar. If you are asked for credentials, authenticate wi
 
 Once your server is running, you can log into BaseX and gain access to its database interactively, as described on the BaseX site.
 
-In a different terminal window, also inside your _docker-basex_ directory, run `./lunch-cl.sh`. Authenticate with userid “admin” and password “admin”.
+In a different terminal window, also inside your _xmllunchbox_ directory, run `./lunch-cl.sh`. Authenticate with userid “admin” and password “admin”.
 
 You should be deposited at the BaseX command line. Type `xquery current-date()` and hit the Enter key. It should return the current date.
 
-* NB - the container is not yet configured to use your local time zone. So you may get GMT.
+* NB - the container is not yet configured to use your local time zone. Until we address this you should get GMT. Let us know when this is a problem.
 
 #### Verify your XSLT processor
 
@@ -229,9 +233,9 @@ At the BaseX command line that you opened above, run `xquery xslt:processor()`. 
 
 To exit this shell, use `exit` and follow its instructions.
 
-#### Access the unux command line
+#### Access the OS command line
 
-In a different terminal window, also inside your _XMLLunchbox_ directory, run `docker exec -it xmllunchbox bash`. You will be deposited at a regular unix command prompt inside your _xmllunchbox_ container. Your userid is “basex”, you are located at _/srv_, and your BaseX resources are at _/srv/basex_. From among the BaseX resources listed in the [full distribution](http://docs.basex.org/wiki/Startup#Full_Distributions), you have the _data_, _repo_, and _webapp_ subdirectories.
+In a different terminal window, also inside your _XMLLunchbox_ directory, run `docker exec -it xmllunchbox bash`. You will be deposited at a regular unix (Linux) command prompt inside your _xmllunchbox_ container. Your userid is “basex”, you are located at _/srv_, and your BaseX resources are at _/srv/basex_. From among the BaseX resources listed in the [full distribution](http://docs.basex.org/wiki/Startup#Full_Distributions), you have the _data_, _repo_, and _webapp_ subdirectories.
 
 Note that depending on how you start your container (`lunch.sh` as described above) several of these are additionally available as bound volumes on your system, that is, external to the container, so that BaseX running inside the container may be configured to run with your data or extensions, maintained externally.
 
@@ -239,7 +243,10 @@ _saxon9he.jar_ is located inside the container at _/usr/src/basex/basex-api/lib/
 
 ### Using XMLLunchbox
 
-The Lunchbox setup comes with a small demonstration application along with a simple Hello World application (meant for editing and testing). These appear at the page http://localhost:8984/XMLLunchbox.
+The Lunchbox setup comes with a small demonstration application along with a simple Hello World application (meant for editing and testing). These appear at the page http://localhost:8984/XMLLunchbox. To experiment, edit or alter them, see the files in the `webapp` directory.
+
+BaseX's RestXQ interfaces, which these demonstrations use, are 
+[documented on the BaseX wiki](http://docs.basex.org/wiki/RESTXQ "BaseX RestXQ docs")
 
 #### Extending the application suite
 
@@ -256,6 +263,7 @@ ____
 
 ## Official BaseX documentation
 
+1. RestXQ <http://docs.basex.org/wiki/RESTXQ>
 1. Docker: <http://docs.basex.org/wiki/Docker>
 1. XSLT: <http://docs.basex.org/wiki/XSLT_Module>
 
