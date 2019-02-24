@@ -90,7 +90,7 @@
     </xsl:variable>
 
     <xsl:variable name="dateString"
-        select="format-dateTime(current-dateTime(), '[Y0001]-[M01]-[D01] [H01]:[m01]:[s01]')"/>
+        select="format-dateTime(current-dateTime(), '[Y0001] [MNn] [D1] [h1]:[m01]:[s01] [P]')"/>
 
     <!-- silenced here b/c the random-number-generator function trips SaxonHE -->
     <xsl:template name="add-line"/>

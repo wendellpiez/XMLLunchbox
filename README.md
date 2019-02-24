@@ -225,6 +225,8 @@ from your browser address bar. If you are asked for credentials, authenticate wi
 1. Run `curl -u admin:admin -i "http://localhost:8984/rest?query=current-date()"` from the command line. It should also return the current date.
 1. Point your browser at http://localhost:8984/XMLLunchbox. You should see a demonstration and/or links to demonstrations.
 
+NB - the container is not yet configured to use your local time zone. Until we address this the time will be represented in GMT. Let us know if this is a problem - especially if you can offer the solution as well.
+
 #### Test your access to the BaseX command line
 
 Once your server is running, you can log into BaseX and gain access to its database interactively, as described on the BaseX site.
@@ -232,8 +234,6 @@ Once your server is running, you can log into BaseX and gain access to its datab
 In a different terminal window, also inside your _xmllunchbox_ directory, run `./lunch-cl.sh`. Authenticate with userid “admin” and password “admin”.
 
 You should be deposited at the BaseX command line. Type `xquery current-date()` and hit the Enter key. It should return the current date.
-
-* NB - the container is not yet configured to use your local time zone. Until we address this you should get GMT. Let us know when this is a problem.
 
 #### Verify your XSLT processor
 
