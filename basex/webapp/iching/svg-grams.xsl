@@ -11,15 +11,15 @@
            "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" -->
     
     <xsl:template match="*" mode="svg-gram">
-        <xsl:param name="dimension">20%</xsl:param>
+        <xsl:param name="dimension">12em</xsl:param>
         <!--override either of these for specialized applications -->
         <xsl:param name="manner" tunnel="yes">hex</xsl:param>
         <xsl:param name="contents">
             <xsl:apply-templates/>
         </xsl:param>
-        <svg width="{$dimension}" height="$dimension" viewBox="0 0 80 70">
+        <svg width="{$dimension}" height="{$dimension}" viewBox="0 0 80 80">
             <desc>SVG gram</desc>
-            <g transform="translate(0 70)">
+            <g transform="translate(0 75)">
                 <xsl:apply-templates select="." mode="draw-line"/>
             </g>
         </svg>
