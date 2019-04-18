@@ -210,10 +210,12 @@ _saxon9he.jar_ is located inside the container at _/usr/src/basex/basex-api/lib/
 
 The Lunchbox setup comes with a small demonstration application along with a simple Hello World application (meant for editing and testing). These appear at the page http://localhost:8984/XMLLunchbox. To experiment, edit or alter them, see the files in the `webapp` directory.
 
+At least one of these demonstrations is likely to be non-trivial (computationally and in other respects). What you see will depend on circumstances -- while this stack is secure and no information is shared with anyone. Browse to the page and reload it a few times. Web developers in particular might be interested to know there is no Javascript.
+
 BaseX's RestXQ interfaces, which these demonstrations use, are 
 [documented on the BaseX wiki](http://docs.basex.org/wiki/RESTXQ "BaseX RestXQ docs")
 
-Beyond this, there is nothing yet to "use": the Lunchbox is empty. It is up to you to fill it with tasty treats.
+Beyond this, there is nothing yet to "use": the Lunchbox is empty. It is up to you to fill it with tasty treats of your own.
 
 #### Extending the application suite
 
