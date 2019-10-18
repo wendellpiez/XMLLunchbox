@@ -128,7 +128,7 @@ The primary entry point for launching the web application is an executable scrip
 > ./lunch.sh
 ```
 
-If you encounter permissions errors, try `sudo ./lunch.sh` with a passwordy.
+If you encounter permissions errors, try `sudo ./lunch.sh` with your superuser password (or talk to your superuser).
 
 The file this invokes looks like this.
 
@@ -227,7 +227,6 @@ Start tracing these processes by examining the nominal `.xqm` files (XQuery modu
 
 If you start Docker with a runtime binding to the `basex/webapp` subdirectory (or with bindings to other subdirectories as needed), you can also interact with these files dynamically, as BaseX is capable of *reloading* and *re-executing* as these files change. This can easily be demonstrated by opening one of the RextXQ declaration files, making modifications, and reloading the page displayed. (Note of course that your *browser* may keep cached copies, which is a different issue.)
 
-
 ## Rationale
 
 Why run an XSLT engine inside an XQuery engine inside Java under Linux inside Docker?
@@ -278,7 +277,7 @@ This project would be impossible without
 [Saxon](http://www.saxonica.com) and 
 [BaseX](http://www.basex.org). (And their developers will probably remind us they stand on the shoulders of giants.) 
 
-Also, many thanks to djbpitt for kicking this off by showing just how easy a Docker container can be.
+Also, many thanks to @djbpitt for kicking this off by showing just how easy a Docker container can be, as well as serving as a model user and developer.
 
 ____
 
